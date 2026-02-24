@@ -450,8 +450,6 @@
     <string name="extended_menu">Uitgebreid menu</string>
     <string name="auto_silent_install">Automatische stille installatie</string>
     <string name="auto_silent_install_desc">Automatische stille installatie bij het starten van de installatie in de dialoog</string>
-    <string name="disable_notification">Tijdens de installatie op de voorgrond houden</string>
-    <string name="close_immediately_on_dialog_dismiss">Dialoog blijft op de voorgrond tijdens het installeren, er worden geen meldingen gestuurd</string>
     <string name="disable_notification_on_dismiss">Sluiten bij sluiten van dialoog</string>
     <string name="close_notification_immediately_on_dialog_dismiss">Het sluiten van de dialoog zal de melding sluiten</string>
     <string name="set_countdown">Aftelling instellen</string>

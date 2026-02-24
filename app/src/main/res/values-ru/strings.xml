@@ -15,7 +15,6 @@
     <string name="clear">Очистка</string>
     <string name="clear_cache">Очистить кэш</string>
     <string name="close">Закрыть</string>
-    <string name="close_immediately_on_dialog_dismiss">Диалоговое окно остается на переднем плане во время установки, щелчок по пустой области автоматически завершит работу</string>
     <string name="close_notification_immediately_on_dialog_dismiss">Диалоговое окно Отклонить автоматически закроется</string>
     <string name="config">Профили</string>
     <string name="config_add_new_package">Добавить новый пакет</string>
@@ -90,7 +89,6 @@
     <string name="disable_adb_install_verify_not_support_dhizuku_desc">Не поддерживается Dhizuku</string>
     <string name="disable_allowed_apex_update_check">Отключить разрешенную проверку обновлений APEX</string>
     <string name="disable_allowed_apex_update_check_desc">Не проверять, можно ли обновить установленный APEX</string>
-    <string name="disable_notification">Установка на переднем плане без уведомления</string>
     <string name="disable_notification_on_dismiss">Закрыть при отклонении диалогового окна</string>
     <string name="disable_verification">Отключить проверку</string>
     <string name="disable_verification_desc">Отключает проверку пакета во время установки. Это не проверка подписи</string>
