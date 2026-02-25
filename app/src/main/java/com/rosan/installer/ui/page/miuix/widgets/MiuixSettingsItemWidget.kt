@@ -149,9 +149,6 @@ data class InstallModeInfo(
     val icon: ImageVector
 )
 
-/**
- * @author wxxsfxyzm
- */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MiuixDataInstallModeWidget(
