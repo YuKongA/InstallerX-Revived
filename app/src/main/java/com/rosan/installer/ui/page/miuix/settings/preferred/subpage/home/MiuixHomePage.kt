@@ -80,11 +80,20 @@ fun MiuixHomePage(
 
     val internetAccessHint = if (RsConfig.isInternetAccessEnabled) stringResource(R.string.internet_access_enabled)
     else stringResource(R.string.internet_access_disabled)
+
     val level = when (RsConfig.LEVEL) {
         Level.STABLE -> stringResource(id = R.string.stable)
         Level.PREVIEW -> stringResource(id = R.string.preview)
         Level.UNSTABLE -> stringResource(id = R.string.unstable)
     }
+
+    val versionInfoText = stringResource(
+        id = R.string.app_version_info_format,
+        internetAccessHint,
+        level,
+        RsConfig.VERSION_NAME,
+        RsConfig.VERSION_CODE
+    )
 
     MiuixUpdateDialog(
         showState = showUpdateDialog,
@@ -162,7 +171,7 @@ fun MiuixHomePage(
                         style = MiuixTheme.textStyles.title2,
                     )
                     Text(
-                        text = "$internetAccessHint$level ${RsConfig.VERSION_NAME} (${RsConfig.VERSION_CODE})",
+                        text = versionInfoText,
                         style = MiuixTheme.textStyles.subtitle,
                         color = MiuixTheme.colorScheme.onSurfaceVariantSummary
                     )
