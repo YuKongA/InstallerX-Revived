@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresPermission
@@ -85,6 +86,14 @@ class ForegroundInfoHandler(scope: CoroutineScope, installer: InstallerRepo) :
     private lateinit var globalAuthorizer: ConfigEntity.Authorizer
     private val networkMutex = Mutex()
     private var isXiaomiNetworkBlocked = false
+    private val xmsfUid: Int? by lazy {
+        try {
+            context.packageManager.getPackageUid(XMSF_PACKAGE_NAME, 0)
+        } catch (e: PackageManager.NameNotFoundException) {
+            Timber.w(e, "Target package not found, UID magic will be skipped.")
+            null
+        }
+    }
 
     // Initialize Delegated Builders
     private val helper by lazy { NotificationHelper(context, installer, appIconRepo) }
@@ -276,8 +285,10 @@ class ForegroundInfoHandler(scope: CoroutineScope, installer: InstallerRepo) :
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private fun notifyWithXiaomiMagic(notificationId: Int, notification: Notification) {
         val hasPrivilege = globalAuthorizer == ConfigEntity.Authorizer.Shizuku
+        val targetUid = xmsfUid
 
-        if (!hasPrivilege) {
+        // Abort magic if no privilege or if the target package UID cannot be resolved
+        if (!hasPrivilege || targetUid == null) {
             notificationManager.notify(notificationId, notification)
             return
         }
@@ -289,7 +300,7 @@ class ForegroundInfoHandler(scope: CoroutineScope, installer: InstallerRepo) :
                     // 1. Block the network and update state
                     PrivilegedManager.setPackageNetworkingEnabled(
                         authorizer = globalAuthorizer,
-                        packageName = XMSF_PACKAGE_NAME,
+                        uid = targetUid,
                         enabled = false
                     )
                     isXiaomiNetworkBlocked = true
@@ -308,7 +319,7 @@ class ForegroundInfoHandler(scope: CoroutineScope, installer: InstallerRepo) :
                         try {
                             PrivilegedManager.setPackageNetworkingEnabled(
                                 authorizer = globalAuthorizer,
-                                packageName = XMSF_PACKAGE_NAME,
+                                uid = targetUid,
                                 enabled = true
                             )
                         } catch (restoreEx: Exception) {
@@ -330,15 +341,17 @@ class ForegroundInfoHandler(scope: CoroutineScope, installer: InstallerRepo) :
         setNotificationImmediate(null)
         job?.cancel()
 
+        val targetUid = xmsfUid
+
         // Double-check initialization to be absolutely safe, though onStart now guarantees it
-        if (::globalAuthorizer.isInitialized && globalAuthorizer == ConfigEntity.Authorizer.Shizuku) {
+        if (::globalAuthorizer.isInitialized && globalAuthorizer == ConfigEntity.Authorizer.Shizuku && targetUid != null) {
             withContext(Dispatchers.IO + NonCancellable) {
                 networkMutex.withLock {
                     if (isXiaomiNetworkBlocked) {
                         try {
                             PrivilegedManager.setPackageNetworkingEnabled(
                                 authorizer = globalAuthorizer,
-                                packageName = XMSF_PACKAGE_NAME,
+                                uid = targetUid,
                                 enabled = true
                             )
                             Timber.i("Restored $XMSF_PACKAGE_NAME network via onFinish fallback")
