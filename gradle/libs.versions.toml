@@ -74,8 +74,6 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 # https://github.com/Kotlin/kotlinx.serialization/blob/master/README.md#setup
 # https://github.com/Kotlin/kotlinx.serialization/blob/master/formats/README.md
 ktx-serializationJson = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "ktx-serialization" }
-# kotlin reflect
-kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
 # AndroidHiddenApiBypass
 # https://github.com/LSPosed/AndroidHiddenApiBypass
 hiddenapibypass = { group = "org.lsposed.hiddenapibypass", name = "hiddenapibypass", version = "6.1" }

@@ -38,6 +38,7 @@ import com.rosan.installer.data.reflect.repo.ReflectRepo
 import com.rosan.installer.data.reflect.repo.getValue
 import com.rosan.installer.data.settings.model.room.entity.ConfigEntity
 import com.rosan.installer.util.OSUtils
+import com.rosan.installer.util.addFlag
 import com.rosan.installer.util.pm.isFreshInstallCandidate
 import com.rosan.installer.util.pm.isPackageArchivedCompat
 import com.rosan.installer.util.removeFlag
@@ -282,14 +283,14 @@ abstract class IBinderInstallerRepoImpl : InstallerRepo, KoinComponent {
         Timber.tag("InstallFlags").d("Initial install flags: ${params.installFlags}")
         Timber.tag("InstallFlags").d("Install flags from config: ${config.installFlags}")
         // Start with the base flags from params and config
-        var newFlags = params.installFlags or config.installFlags
+        var newFlags = params.installFlags.addFlag(config.installFlags)
         // Force-enable the 'ReplaceExisting' flag as a baseline
-        newFlags = newFlags or InstallOption.ReplaceExisting.value
+        newFlags = newFlags.addFlag(InstallOption.ReplaceExisting.value)
         Timber.tag("InstallFlags").d("After adding baseline flags: $newFlags")
         // Conditionally add the 'UnArchive' flag
         if (context.packageManager.isPackageArchivedCompat(packageName)) {
             Timber.tag("InstallFlags").d("Package $packageName is archived, adding unarchive option.")
-            newFlags = newFlags or InstallOption.UnArchive.value
+            newFlags = newFlags.addFlag(InstallOption.UnArchive.value)
         } else {
             Timber.tag("InstallFlags").d("Package $packageName is not archived.")
         }
@@ -305,8 +306,7 @@ abstract class IBinderInstallerRepoImpl : InstallerRepo, KoinComponent {
                     pm.isFreshInstallCandidate(packageName)
 
         if (!shouldGrantAll) {
-            params.installFlags =
-                params.installFlags.removeFlag(InstallOption.GrantAllRequestedPermissions.value)
+            params.installFlags = params.installFlags.removeFlag(InstallOption.GrantAllRequestedPermissions.value)
         }
         // --- Disable End ---
 

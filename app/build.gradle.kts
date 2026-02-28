@@ -216,7 +216,6 @@ dependencies {
     // implementation(libs.work.runtime.ktx)
 
     implementation(libs.ktx.serializationJson)
-    implementation(libs.kotlin.reflect)
 
     implementation(libs.hiddenapibypass)
 
