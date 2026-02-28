@@ -32,6 +32,7 @@ timber = "5.0.1"
 miuix = "0.8.5"
 okhttp = "5.3.2"
 monetcompat = "0.4.1"
+materialKolor = "5.0.0-alpha06"
 
 [plugins]
 agp-lib = { id = "com.android.library", version.ref = "agp" }
@@ -125,3 +126,5 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 # https://github.com/KieronQuinn/MonetCompat
 monetcompat = { module = "com.github.KieronQuinn:MonetCompat", version.ref = "monetcompat" }
 androidx-palette = { group = "androidx.palette", name = "palette", version = "1.0.0" }
+
+materialKolor = { module = "com.materialkolor:material-kolor", version.ref = "materialKolor" }
